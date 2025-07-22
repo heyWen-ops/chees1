@@ -1,0 +1,133 @@
+/* Estilos generales */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif, sans-serif;
+    margin: 0; /* Elimina margenes preterminados*/
+    padding: 0; /*Elimina márgenes preterminados*/
+    min-height: 100vh; /* Altura mínima del 100% de la ventana */ 
+    display:flex;
+    justify-content: center;
+       align-self: center;
+    background: linear-gradient(135deg, #4e54c8, #8f94fb); /* Fondo degradado azul*/
+}
+/* Estilos para el contenedor de autenticación */
+.auth-container, .container {
+    width: 100%; /* Ocupa todo el ancho disponible*/
+    max-width: 400px; /* Delimita el ancho máximo*/
+    padding: 20px; /* Agrega relleno interno*/
+    background-color: #fff;
+    border-radius: 5px; /* Bprdes redondeados*/
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /*Sombra*/
+}
+.logo {
+    font-size: 2.5rem;
+    margin-bottom: 1rem; /*Espacio inferior */
+    color: #2d3748;
+}
+/* Grupos de formularios */
+.form-group, .input-group {
+    margin-bottom: 1rem;
+    text-align: left;
+    width: 100%;
+}
+.form-group label{
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+}
+/* input fields */
+.form-group input, 
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-sizing:border-box;
+}
+/* Butones */
+button,
+.create-game-btn,
+.logout-btn {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    background-color: #4e54c8;
+    color:#fff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-bottom: 0.5rem;
+}
+button:hover,
+.create-game-btn:hover{
+    background-color: #3c40c6;
+}
+
+/* Links */
+.register-link, .login-link{
+    text-align: center;
+    margin-top: 1rem;
+    color: #4a5468;
+}
+.register-link a, .login-link a {
+    color:#4e54c8;
+    text-decoration: none;
+}
+.register-link a:hover, .login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Mensajes de error */
+.error-message, error {
+    color: #e53e3e;
+    margin-bottom: 1rem;
+    display: none;
+    background-color: #fff5ff;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+}
+
+/* Divisores */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1px;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0 10px;
+}
+
+/* Código de juego */
+.game-code-display {
+    background: #f7fafc;
+    border: 2px solid #4299e1;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+}
+.game-code{
+    font-size: 2rem;
+    font-family: monospace;
+    color:#2d3748;
+    margin: 10px 0;
+    letter-spacing: 2px; /* Espaciado entre letras*/
+}
+
+/* Información del usuario */
+.user-info{
+    display: flex;
+    justify-content: space-between; /* Espacia elementos*/
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f7fafc;
+    border-radius: 10px;
+}

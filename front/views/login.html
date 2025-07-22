@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Chess Online</title>
+    <link rel="stylesheet" href="../public/css/main.css">
+</head>
+<body>
+    <div class = "auth-conteiner"></div>
+    <div class = "logo">♙</div>
+    <h2>Login</h2>
+    <div id="errorMessage" class="error-message"></div>
+    <form id="loginForm">
+        <!-- Campo para el nombre de usuario-->
+        <div class = "form-group">
+            <label for="username">Username: </label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <!-- Campo para la contraseña -->
+        <div class = "form-group">
+            <label for="password">Password: </label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="btn">Login</button>
+    </form>
+        <!-- Enlace para redirigir al usuario a la página de registro -->
+        <div class="register-link">
+            <p>Don't have an account? <a href="/register">Register here</a></p>
+        </div>
+    <script>
+        // Manejo del formulario de inicio de sesión
+        document.getElementById('loginForm').addEventListener('submit', async(e) => {
+            e.preventDefault(); // Prevenir el envío del formulario por defecto
+            const errorMessage = document.getElementById('errorMessage');
+            try {
+                //Se envía el formulario a la ruta /login
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Si el inicio de sesión es exitoso, redirigir al usuario a la página principal
+                    window.location.href = '/';
+                } else {
+                    // Si hay un error, mostrar el mensaje de error
+                    errorMessage.textContent = data.message || 'Login failed. Please try again.';
+                    errorMessage.style.display = 'block';
+                }
+            } catch (err) {
+                // Manejo de errores de red o de servidor
+                errorMessage.textContent = 'Error logging in.Please try again.';
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+
+</body>
+</html>

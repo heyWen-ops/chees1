@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chees Online</title>
+    <link rel="stylesheet" href="../public/css/main.css">
+</head>
+<body>
+    <div class = "container">
+        <div class = "logo">
+            ♙ El Salvador Chess Club</div>
+        <!--Sección que muestra la información del usuario y el botón de logout-->
+        <div class="user-info">
+            <span> Welcome, <span id="usernameDisplay"></span></span>
+        <!-- Botón de logout que llama a la función logout()-->
+            <button onclick ="logout()" class="logout-btn">Logout</button>
+        </div>
+        <!--Subtítulo de la página-->
+        <p class="subtitle">Play chess online with friends</p>
+
+         <!--Div para mostrar mensajes de error (Mayor control de nuestra app)-->
+        <div id="error" class="error"></div>
+        <!-- Botón para crear un nuevo juego-->
+        <button onclick="createGame()" class="create-game-btn">Create Game</button>
+        <!--Separador visual-->
+        <div class="divider">or</div>
+        <!--Grupo de elementos para unirse a un juego existente-->
+        <div class = "input-group">
+            <input type="text" id="gameCodeInput" placeholder="Enter the game code" required>
+            <!-- Botón para unirse al juego-->
+            <button onclick="joinGame()" class="create-game-btn">Join Game</button>
+        </div>
+        <!--Sección del código de la partida creada-->
+        <div id = "gameCodeDisplay" class="game-code-display">
+            <div>Share this code with your friend</div>
+            <div id="gameCode" class = "game-code"></div>
+            <button onclick="copyGameCode()" class="copy-btn">Copy Code</button>
+        </div>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded',async () => {
+            // Obtener el nombre de usuario del almacenamiento local
+        try {
+            const response = await fetch('auth/me'); // Solicitud para obtener los datos del usuario
+            const data = await response.json(); // Convierte la respuesta a JSON
+            if (data.success) {
+                // Si la solicitud es exitosa, mostrar el nombre de usuario
+                document.getElementById('usernameDisplay').textContent = data.user.username;
+            } 
+            // Si hay un error, se muestra en la consola
+        } catch (err) {
+            console.error('Error fetching user data:', err);
+            }
+        });
+        // Función asíncrona (async) para cerrar sesión del usuario
+        async function logout() {
+            try { //try/catch para capturar errores
+                const response = await fetch('/auth/logout', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({gameCode: gameCode, timeControl:10}) // Envía una solicitud POST (Autoprueba de encendidoto)
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Si el cierre de sesión es exitoso, redirigir al usuario a la página de inicio de sesión
+                    window.location.href = '/game/${gameCode}'; //posible error
+                } else {
+                    // Si hay un error, mostrar el mensaje de error
+                    showError (data.message||'Error creating game. Please try again.');
+                }
+            } catch (err) {
+                showError('Error logging out:', err);
+            }
+        }
+        // Función asíncrona (async) unirse aun juego existente
+        async function joinGame() {
+            const gameCode = document.getElementById('gameCodeInput').value; //Obtiene el código del juego desde el campo de texto (gameCodeInput)
+            if (!gameCode) {
+                showError('Please enter a game code.');
+                return;
+            }
+            try {
+                const response = await fetch('/game/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ gameCode: gameCode })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Si la unión al juego es exitosa, redirigir al usuario al juego
+                    window.location.href = `/game/${gameCode}`;
+                } else {
+                    // Si hay un error, mostrar el mensaje de error
+                    showError(data.message || 'Error joining game. Please try again.');
+                }
+            } catch (err) {
+                showError('Error joining game:', err);
+            }
+        }
+
+    // Función para copiar el código del juego al portapapeles
+    function copyGameCode() {
+        const gameCode = document.getElementById('gameCode').textContent; //Obtiene el código del juego desde el elemento con id "gameCode"
+        navigator.clipboard.writeText(gameCode).then(() => { //Usa navigator.clipboard para copiar el texto al portapapeles
+            // Cambiar el texto del botón a "Copied!" y restaurarlo después de 2 segundos
+            const copyButton = document.querySelector('.copy-button');
+            const originalText = copyButton.textContent;
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = originalText;
+            }, 2000); // Restaura el texto original después de 2 segundos
+        }).catch(err => {
+            console.error('Error copying game code:', err);
+            showError('Error copying game code');
+        });
+    }
+    // Verificar si hay errores en la URL y mostrarlos
+    const urlParams = new URLSearchParams(window.location.search); // Usa URLSearchParams para obtener parámetros de la URL
+    const errorMessage = urlParams.get('error');
+    if(error) {
+        showError(
+            error === 'noCode' ? 'Please enter a game code.' :
+            error ==='invalidCode' ? 'Invalid game code. Please try again.' :
+            error === 'gameNotFound' ? 'Game not found. Please check the code.' :
+            error === 'gameFull' ? 'Game is full. Please try another code.' :
+            'Error joining game. Please try again.'
+        );
+    }
+    </script>
+</body>
