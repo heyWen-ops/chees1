@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <!--jQuery simplifica la manipulación del DOM, manejo de eventos y solicitudes AJAX-->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!--Crucial para sincronizar movimiento, chat y estado del juego entorno multijugador-->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Incluye nuevamente jQuery desde otro CDN (Cloudflare) -->
+    <!-- Nota: Esto es redundante, ya que jQuery ya se incluyó en la primera línea -->
+    <!-- Se recomienda eliminar esta línea para evitar cargar la misma biblioteca dos veces -->
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+    <!-- Chessboard.js dibuja el tablero de ajedrez en la pantalla -->
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+    <!-- game.css contiene estilos para el contenedor principal, panel de información, temporizador, chat, botón de inicio, etc. -->
+    <link rel="stylesheet" href="/public/css/game.css">
+
+    <script>
+        // Inicializa el socket.io para la comunicación en tiempo real
+        const socket = io();
+        // Variable para almacenar el nombre de usuario del jugador
+        let playerUsername = '{{username}}';
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
